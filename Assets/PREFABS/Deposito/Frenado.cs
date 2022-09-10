@@ -1,28 +1,44 @@
+using System;
 using UnityEngine;
-
 public class Frenado : MonoBehaviour 
 {
-	public float VelEntrada = 0;
-	public string TagDeposito = "Deposito";
+	[SerializeField]private float VelEntrada = 0;
+	[SerializeField]private bool Frenando = false;
+	
+	private string TagDeposito = "Deposito";
+	private int Contador = 0;
+	private int CantMensajes = 10;
+	private float TiempFrenado = 0.5f;
+	private float Tempo = 0f;
+	private Vector3 Destino;
 
-	int Contador = 0;
-	int CantMensajes = 10;
-	float TiempFrenado = 0.5f;
-	float Tempo = 0f;
+	private Rigidbody rb;
+	private ControlDireccion _controlDireccion;
+	private CarController _carController;
 	
-	Vector3 Destino;
 	
-	public bool Frenando = false;
 	
-	//-----------------------------------------------------//
-	
-	// Use this for initialization
-	void Start () 
+	private void Start ()
 	{
+		rb = GetComponent<Rigidbody>();
+		_controlDireccion = GetComponent<ControlDireccion>();
+		_carController = GetComponent<CarController>();
 		Frenar();
 	}
-	
-	void FixedUpdate ()
+
+	private void OnEnable()
+	{
+		GameManager.FrenarCoche += Frenar;
+		GameManager.RestaurarVelCoche += RestaurarVel;
+	}
+
+	private void OnDisable()
+	{
+		GameManager.FrenarCoche -= Frenar;
+		GameManager.RestaurarVelCoche -= RestaurarVel;
+	}
+
+	private void FixedUpdate ()
 	{
 		if(Frenando)
 		{
@@ -34,7 +50,27 @@ public class Frenado : MonoBehaviour
 		}
 	}
 	
-	void OnTriggerEnter(Collider other) 
+	private void Frenar()
+	{
+		_controlDireccion.enabled = false;
+		_carController.SetAcel(0f);
+		rb.velocity = Vector3.zero;
+		
+		Frenando = true;
+		Tempo = 0;
+		Contador = 0;
+	}
+	
+	public void RestaurarVel()
+	{
+		_controlDireccion.enabled = true;
+		_carController.SetAcel(1f);
+		Frenando = false;
+		Tempo = 0;
+		Contador = 0;
+	}
+	
+	private void OnTriggerEnter(Collider other) 
 	{
 		if(other.tag == TagDeposito)
 		{
@@ -51,26 +87,5 @@ public class Frenado : MonoBehaviour
 			}
 		}
 	}
-	
-	//-----------------------------------------------------------//
-	
-	public void Frenar()
-	{
-		GetComponent<ControlDireccion>().enabled = false;
-		gameObject.GetComponent<CarController>().SetAcel(0f);
-        GetComponent<Rigidbody>().velocity = Vector3.zero;
-		
-		Frenando = true;
-		Tempo = 0;
-		Contador = 0;
-	}
-	
-	public void RestaurarVel()
-	{
-		GetComponent<ControlDireccion>().enabled = true;
-		gameObject.GetComponent<CarController>().SetAcel(1f);
-        Frenando = false;
-		Tempo = 0;
-		Contador = 0;
-	}
+
 }

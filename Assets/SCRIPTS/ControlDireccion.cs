@@ -3,22 +3,32 @@ using UnityEngine;
 public class ControlDireccion : MonoBehaviour 
 {
 	public enum TipoInput {AWSD, Arrows}
-	public TipoInput InputAct = TipoInput.AWSD;
+	[SerializeField]private TipoInput InputAct = TipoInput.AWSD;
 
-	float Giro = 0;
-	
-	public bool Habilitado = true;
-	CarController carController;
-		
-	//---------------------------------------------------------//
-	
-	// Use this for initialization
+	private float Giro = 0;
+	[SerializeField]private bool Habilitado = true;
+	private CarController carController;
+
 	void Start () 
 	{
 		carController = GetComponent<CarController>();
 	}
-	
-	// Update is called once per frame
+
+	private void OnEnable()
+	{
+		GameManager.HabilitarCoche += SetHabilitado;
+	}
+
+	private void OnDisable()
+	{
+		GameManager.HabilitarCoche -= SetHabilitado;
+	}
+
+	private void SetHabilitado(bool habilitar)
+	{
+		Habilitado = habilitar;
+	}
+
 	void Update () 
 	{
 		switch(InputAct)
