@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 public class Deposito2 : MonoBehaviour 
 {
@@ -16,8 +15,11 @@ public class Deposito2 : MonoBehaviour
 
 	void Start () 
 	{
+		
 		Contr1 = GameObject.Find("ContrDesc1").GetComponent<ControladorDeDescarga>();
-		Contr2 = GameObject.Find("ContrDesc2").GetComponent<ControladorDeDescarga>();
+		
+		if(GameManager.Instancia.Players.Length == 2)
+			Contr2 = GameObject.Find("ContrDesc2").GetComponent<ControladorDeDescarga>();
 		
 		Physics.IgnoreLayerCollision(8,9,false);
 	}
@@ -80,6 +82,9 @@ public class Deposito2 : MonoBehaviour
 		if(PjActual.IdPlayer == 0)
 			Contr1.Activar(this);
 		else
-			Contr2.Activar(this);
+		{
+			if(GameManager.Instancia.Players.Length ==2)
+				Contr2.Activar(this);
+		}
 	}
 }

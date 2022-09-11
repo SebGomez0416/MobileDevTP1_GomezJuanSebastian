@@ -9,9 +9,12 @@ EditorBuildSettings:
     path: Assets/ESCENAS/SinglePlayer.unity
     guid: 6a990c81459e9b04c87adbbd2d639bbd
   - enabled: 1
-    path: Assets/ESCENAS/PtsFinal.unity
+    path: Assets/ESCENAS/GameOverSinglePlayer.unity
     guid: 3fed48a553168ae458bbf014c512a5cd
   - enabled: 1
     path: Assets/ESCENAS/Multiplayer.unity
     guid: d5584a95d2310f7218f2384d879586a6
+  - enabled: 1
+    path: Assets/ESCENAS/GameOverMultiplayer.unity
+    guid: 4764fb5f2267a7bd0abe90e58fcbd62d
   m_configObjects: {}

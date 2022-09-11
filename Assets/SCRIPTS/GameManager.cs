@@ -10,10 +10,8 @@ public class GameManager : MonoBehaviour {
 
     public enum EstadoJuego { Tutorial, Jugando, Finalizado }
     [SerializeField]private EstadoJuego EstAct = EstadoJuego.Tutorial;
-
-    [SerializeField]private Player player1;
-    [SerializeField]private Player player2;
-
+    [SerializeField]private Player[] players;
+    
     private bool ConteoRedresivo = true;
     [SerializeField]private Rect ConteoPosEsc;
     [SerializeField]private float ConteoParaInicion = 3;
@@ -37,11 +35,10 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Start()
-    {
+    { 
         IniciarTutorial();
     }
-    public Player Player1 { get; private set; }
-    public Player Player2 { get; private set; }
+    public Player[] Players => this.players;
 
     private void Update()
     {
@@ -50,10 +47,10 @@ public class GameManager : MonoBehaviour {
             case EstadoJuego.Tutorial:
 
                 if (Input.GetKeyDown(KeyCode.W)) 
-                    player1.Seleccionado = true;
+                    players[0].Seleccionado = true;
 
                 if (Input.GetKeyDown(KeyCode.UpArrow)) 
-                    player2.Seleccionado = true;
+                    players[1].Seleccionado = true;
                 break;
 
             case EstadoJuego.Jugando:
@@ -86,15 +83,15 @@ public class GameManager : MonoBehaviour {
 
                 TiempEspMuestraPts -= Time.deltaTime;
                 if (TiempEspMuestraPts <= 0)
-                    SceneManager.LoadScene("PtsFinal");
+                    SceneManager.LoadScene(players.Length == 1 ? "GameOverSinglePlayer" : "GameOverMultiplayer");
                 break;
         }
         TiempoDeJuegoText.transform.parent.gameObject.SetActive(EstAct == EstadoJuego.Jugando && !ConteoRedresivo);
     }
     private void IniciarTutorial()
     {
-        player1.CambiarATutorial();
-        player2.CambiarATutorial();
+        foreach (var p in players)
+            p.CambiarATutorial();
     }
     private void EmpezarCarrera()
     {
@@ -107,65 +104,82 @@ public class GameManager : MonoBehaviour {
         EstAct = GameManager.EstadoJuego.Finalizado;
         TiempoDeJuego = 0;
         
-        if (player1.Dinero > player2.Dinero) {
-            
-            if (player1.LadoActual == Visualizacion.Lado.Der)
-                DatosPartida.LadoGanadaor = DatosPartida.Lados.Der;
-            else
-                DatosPartida.LadoGanadaor = DatosPartida.Lados.Izq;
-            
-            DatosPartida.PtsGanador = player1.Dinero;
-            DatosPartida.PtsPerdedor = player2.Dinero;
-        }
-        else 
+        if(players.Length == 1)
+            DatosPartida.PtsGanador = players[0].Dinero;
+        else
         {
-            if (player2.LadoActual == Visualizacion.Lado.Der)
-                DatosPartida.LadoGanadaor = DatosPartida.Lados.Der;
-            else
-                DatosPartida.LadoGanadaor = DatosPartida.Lados.Izq;
+            if (players[0].Dinero > players[1].Dinero) {
+            
+                if (players[0].LadoActual == Visualizacion.Lado.Der)
+                    DatosPartida.LadoGanadaor = DatosPartida.Lados.Der;
+                else
+                    DatosPartida.LadoGanadaor = DatosPartida.Lados.Izq;
+            
+                DatosPartida.PtsGanador = players[0].Dinero;
+                DatosPartida.PtsPerdedor = players[1].Dinero;
+            }
+            else 
+            {
+                if (players[1].LadoActual == Visualizacion.Lado.Der)
+                    DatosPartida.LadoGanadaor = DatosPartida.Lados.Der;
+                else
+                    DatosPartida.LadoGanadaor = DatosPartida.Lados.Izq;
 
          
-            DatosPartida.PtsGanador = player2.Dinero;
-            DatosPartida.PtsPerdedor = player1.Dinero;
+                DatosPartida.PtsGanador = players[1].Dinero;
+                DatosPartida.PtsPerdedor = players[0].Dinero;
+            }
         }
 
         FrenarCoche?.Invoke();
-        player1.ContrDesc.FinDelJuego();
-        player2.ContrDesc.FinDelJuego();
+        foreach (var p in players)
+           p.ContrDesc.FinDelJuego();
     }
     void CambiarACarrera() {
 
         EstAct = GameManager.EstadoJuego.Jugando;
         ConteoInicio.gameObject.SetActive(true);
         
-        player1.CambiarAConduccion();
-        player2.CambiarAConduccion();
-            
+        foreach (var p in players)
+            p.CambiarAConduccion();
+
         for (int i = 0; i < ObjsCalibracion.Length; i++) 
             ObjsCalibracion[i].SetActive(false);
-        
-        player1.FinCalibrado = true;
-        player2.FinCalibrado = true;
+
+        foreach (var p in players)
+            p.FinCalibrado = true;
 
         for (int i = 0; i < ObjsCarrera.Length; i++) 
             ObjsCarrera[i].SetActive(true);
 
-        player1.gameObject.transform.position = PosCamionesCarrera[0];
-        player2.gameObject.transform.position = PosCamionesCarrera[1];
+        for (short i = 0; i < players.Length; i++)
+            players[i].gameObject.transform.position = PosCamionesCarrera[i];
 
         TiempoDeJuegoText.transform.parent.gameObject.SetActive(false);
         ConteoInicio.gameObject.SetActive(false);
     }
     public void FinCalibracion(int playerID)
     {
-        if (playerID == 0) 
-            player1.FinTuto = true;
+        switch (playerID)
+        {
+            case 0:
+                players[0].FinTuto = true;
+                break;
+            case 1:
+                players[1].FinTuto = true;
+                break;
+        }
 
-        if (playerID == 1) 
-            player2.FinTuto = true;
-
-        if (player1.FinTuto && player2.FinTuto)
-            CambiarACarrera();
+        if (players.Length == 1)
+        {
+            if ( players[0].FinTuto )
+                CambiarACarrera();
+        }
+        else
+        {
+            if ( players[0].FinTuto &&  players[1].FinTuto)
+                CambiarACarrera();
+        }
     }
 
 }

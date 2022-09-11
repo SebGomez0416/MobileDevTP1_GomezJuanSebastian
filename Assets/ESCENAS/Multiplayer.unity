@@ -75726,8 +75726,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TiempoDeJuego: 10
   EstAct: 0
-  player1: {fileID: 13058}
-  player2: {fileID: 27660010}
+  players:
+  - {fileID: 13058}
+  - {fileID: 27660010}
   ConteoPosEsc:
     serializedVersion: 2
     x: 0

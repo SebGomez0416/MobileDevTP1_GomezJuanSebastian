@@ -186,12 +186,32 @@ public class TaxiComp : MonoBehaviour
 	
 	bool Medicion()
 	{
-		float dist1 = (GameManager.Instancia.Player1.transform.position - PosIni).magnitude;
-		float dist2 = (GameManager.Instancia.Player2.transform.position - PosIni).magnitude;
+		float dist1 = 0;
+		float dist2 = 0;
 		
-		if(dist1 > 4 && dist2 > 4)
-			return true;
+		if (GameManager.Instancia.Players.Length == 2)
+		{
+			 dist1 = (GameManager.Instancia.Players[0].transform.position - PosIni).magnitude;
+			 dist2 = (GameManager.Instancia.Players[1].transform.position - PosIni).magnitude;
+			 
+			 if(dist1 > 4 && dist2 > 4)
+				 return true;
+			 else
+				 return false;
+		}
+
 		else
-			return false;
+		{
+			dist1 = (GameManager.Instancia.Players[0].transform.position - PosIni).magnitude;
+			if(dist1 > 4 )
+				return true;
+			else
+				return false;
+			
+		}
+		
+		
+		
+		
 	}
 }
