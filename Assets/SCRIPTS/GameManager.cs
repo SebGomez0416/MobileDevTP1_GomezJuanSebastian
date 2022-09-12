@@ -36,6 +36,8 @@ public class GameManager : MonoBehaviour {
 
     private void Start()
     { 
+        DatosPartida.instance.Init();
+        DatosPartida.instance.cantidadPlayers = players.Length;
         IniciarTutorial();
     }
     public Player[] Players => this.players;
@@ -83,7 +85,19 @@ public class GameManager : MonoBehaviour {
 
                 TiempEspMuestraPts -= Time.deltaTime;
                 if (TiempEspMuestraPts <= 0)
-                    SceneManager.LoadScene(players.Length == 1 ? "GameOverSinglePlayer" : "GameOverMultiplayer");
+                {
+                    if (players.Length == 1)
+                    {
+                        DatosPartida.instance.ScoreP1 = players[0].Dinero;
+                        SceneManager.LoadScene("GameOverSinglePlayer");
+                    }
+                    else
+                    {
+                        DatosPartida.instance.ScoreP1 = players[0].Dinero;
+                        DatosPartida.instance.ScoreP2 = players[1].Dinero;
+                        SceneManager.LoadScene("GameOverMultiplayer");
+                    }
+                }
                 break;
         }
         TiempoDeJuegoText.transform.parent.gameObject.SetActive(EstAct == EstadoJuego.Jugando && !ConteoRedresivo);
@@ -103,33 +117,6 @@ public class GameManager : MonoBehaviour {
     {
         EstAct = GameManager.EstadoJuego.Finalizado;
         TiempoDeJuego = 0;
-        
-        if(players.Length == 1)
-            DatosPartida.PtsGanador = players[0].Dinero;
-        else
-        {
-            if (players[0].Dinero > players[1].Dinero) {
-            
-                if (players[0].LadoActual == Visualizacion.Lado.Der)
-                    DatosPartida.LadoGanadaor = DatosPartida.Lados.Der;
-                else
-                    DatosPartida.LadoGanadaor = DatosPartida.Lados.Izq;
-            
-                DatosPartida.PtsGanador = players[0].Dinero;
-                DatosPartida.PtsPerdedor = players[1].Dinero;
-            }
-            else 
-            {
-                if (players[1].LadoActual == Visualizacion.Lado.Der)
-                    DatosPartida.LadoGanadaor = DatosPartida.Lados.Der;
-                else
-                    DatosPartida.LadoGanadaor = DatosPartida.Lados.Izq;
-
-         
-                DatosPartida.PtsGanador = players[1].Dinero;
-                DatosPartida.PtsPerdedor = players[0].Dinero;
-            }
-        }
 
         FrenarCoche?.Invoke();
         foreach (var p in players)

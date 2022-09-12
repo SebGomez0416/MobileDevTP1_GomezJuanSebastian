@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/ESCENAS/GameOverMultiplayer.unity
     guid: 4764fb5f2267a7bd0abe90e58fcbd62d
+  - enabled: 1
+    path: Assets/ESCENAS/Menu.unity
+    guid: c491716d7626bb200bb3576d0cf3b81e
   m_configObjects: {}
