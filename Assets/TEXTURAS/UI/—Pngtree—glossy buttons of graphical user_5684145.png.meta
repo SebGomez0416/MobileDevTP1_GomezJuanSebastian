@@ -1,13 +1,16 @@
 fileFormatVersion: 2
-guid: b493ef1090bf388459df81d7f27e2686
+guid: 4dcafbec25d7c6749afdaa2754741292
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2451456018116532809
-    second: png-clipart-computer-icons-desktop-emoticon-creative-market-game-ui-miscellaneous-text_0
+      213: -7149284688812915285
+    second: "\u2014Pngtree\u2014glossy buttons of graphical user_5684145_0"
   - first:
-      213: -7750688557477108886
-    second: png-clipart-computer-icons-desktop-emoticon-creative-market-game-ui-miscellaneous-text_1
+      213: -3530553431862507918
+    second: "\u2014Pngtree\u2014glossy buttons of graphical user_5684145_1"
+  - first:
+      213: 1308177020362158943
+    second: "\u2014Pngtree\u2014glossy buttons of graphical user_5684145_2"
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -133,13 +136,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: png-clipart-computer-icons-desktop-emoticon-creative-market-game-ui-miscellaneous-text_0
+      name: "\u2014Pngtree\u2014glossy buttons of graphical user_5684145_0"
       rect:
         serializedVersion: 2
-        x: 224
-        y: 617
-        width: 63
-        height: 65
+        x: 258
+        y: 794
+        width: 681
+        height: 227
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -147,20 +150,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7b5aba96dbdaafdd0800000000000000
-      internalID: -2451456018116532809
+      spriteID: ba5ca2d3473a8cc90800000000000000
+      internalID: -7149284688812915285
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: png-clipart-computer-icons-desktop-emoticon-creative-market-game-ui-miscellaneous-text_1
+      name: "\u2014Pngtree\u2014glossy buttons of graphical user_5684145_1"
       rect:
         serializedVersion: 2
-        x: 126
-        y: 419
-        width: 63
-        height: 65
+        x: 258
+        y: 483
+        width: 681
+        height: 227
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -168,8 +171,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a6364e662d5007490800000000000000
-      internalID: -7750688557477108886
+      spriteID: 2768c410c54f00fc0800000000000000
+      internalID: -3530553431862507918
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "\u2014Pngtree\u2014glossy buttons of graphical user_5684145_2"
+      rect:
+        serializedVersion: 2
+        x: 257
+        y: 172
+        width: 681
+        height: 227
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f53f30aa114972210800000000000000
+      internalID: 1308177020362158943
       vertices: []
       indices: 
       edges: []
@@ -177,7 +201,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 406b0a4ebbbd474439ac01cb5ea9ce02
+    spriteID: c90e10c6cad0c3f40a5eeb179f745303
     internalID: 0
     vertices: []
     indices: 
