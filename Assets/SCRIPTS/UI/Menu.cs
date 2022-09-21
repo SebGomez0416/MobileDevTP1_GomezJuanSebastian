@@ -1,18 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Menu : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+
+    [SerializeField] private GameObject screenCredits;
+    [SerializeField] private GameObject screenDifficulty;
+
+    public void ExitScreen(bool state)
     {
-        
+        screenCredits.SetActive(state);
+    }
+    
+    public void Exit()
+    {
+        Application.Quit();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ChangeScreen()
     {
-        
+        screenDifficulty.SetActive(true);
     }
+
+    
+    
 }
