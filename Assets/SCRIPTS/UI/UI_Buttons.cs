@@ -10,6 +10,7 @@ public class UI_Buttons : MonoBehaviour
     [SerializeField] private GameObject reiniciar;
     
     public static event Action OnPause;
+    public static event Action OnMute;
     private bool isPause;
 
     private void Awake()
@@ -63,7 +64,7 @@ public class UI_Buttons : MonoBehaviour
 
     public void Mute()
     {
-        //codear
+        OnMute?.Invoke();
     }
 
     public void Salir()
