@@ -834,7 +834,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 794404525}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 735265436}
+        m_TargetAssemblyTypeName: UI_Buttons, Assembly-CSharp
+        m_MethodName: Hard
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &794404525
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1231,7 +1243,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 735265435}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
-        m_MethodName: ChangeScreen
+        m_MethodName: MultiPlayer
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1362,7 +1374,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 891348736}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 735265436}
+        m_TargetAssemblyTypeName: UI_Buttons, Assembly-CSharp
+        m_MethodName: Easy
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &891348736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1484,7 +1508,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 944997863}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 735265436}
+        m_TargetAssemblyTypeName: UI_Buttons, Assembly-CSharp
+        m_MethodName: Normal
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &944997863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2169,6 +2205,75 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1275436902}
   m_CullTransparentMesh: 1
+--- !u!1001 &1292066222
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1068871551204666825, guid: 1bbbd4b6b25827e4f8ce7129c3ae5556,
+        type: 3}
+      propertyPath: m_Name
+      value: DatosPartida
+      objectReference: {fileID: 0}
+    - target: {fileID: 6898913152681011929, guid: 1bbbd4b6b25827e4f8ce7129c3ae5556,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6898913152681011929, guid: 1bbbd4b6b25827e4f8ce7129c3ae5556,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6898913152681011929, guid: 1bbbd4b6b25827e4f8ce7129c3ae5556,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6898913152681011929, guid: 1bbbd4b6b25827e4f8ce7129c3ae5556,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6898913152681011929, guid: 1bbbd4b6b25827e4f8ce7129c3ae5556,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6898913152681011929, guid: 1bbbd4b6b25827e4f8ce7129c3ae5556,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6898913152681011929, guid: 1bbbd4b6b25827e4f8ce7129c3ae5556,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6898913152681011929, guid: 1bbbd4b6b25827e4f8ce7129c3ae5556,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6898913152681011929, guid: 1bbbd4b6b25827e4f8ce7129c3ae5556,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6898913152681011929, guid: 1bbbd4b6b25827e4f8ce7129c3ae5556,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6898913152681011929, guid: 1bbbd4b6b25827e4f8ce7129c3ae5556,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1bbbd4b6b25827e4f8ce7129c3ae5556, type: 3}
 --- !u!1001 &1351497967
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2388,7 +2493,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 735265435}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
-        m_MethodName: ChangeScreen
+        m_MethodName: SinglePlayer
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

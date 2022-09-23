@@ -16,8 +16,15 @@ public class Menu : MonoBehaviour
         Application.Quit();
     }
 
-    public void ChangeScreen()
+    public void SinglePlayer()
     {
+        DatosPartida.instance.Players = 1;
+        screenDifficulty.SetActive(true);
+    }
+    
+    public void MultiPlayer()
+    {
+        DatosPartida.instance.Players = 2;
         screenDifficulty.SetActive(true);
     }
 

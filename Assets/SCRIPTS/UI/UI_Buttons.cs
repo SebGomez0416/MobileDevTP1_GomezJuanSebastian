@@ -67,9 +67,40 @@ public class UI_Buttons : MonoBehaviour
         OnMute?.Invoke();
     }
 
+    public void Easy()
+    {
+        DatosPartida.instance.difficulty = DifficultyController.Difficulty.Easy;
+        ChangeScene();
+    }
+    
+    public void Normal()
+    {
+        DatosPartida.instance.difficulty = DifficultyController.Difficulty.Normal;
+        ChangeScene();
+    }
+    
+    public void Hard()
+    {
+        DatosPartida.instance.difficulty = DifficultyController.Difficulty.Hard;
+        ChangeScene();
+    }
+
     public void Salir()
     {
         Application.Quit();
+    }
+
+    private void ChangeScene()
+    {
+        switch (DatosPartida.instance.Players)
+        {
+            case 1:
+                SceneManager.LoadScene("SinglePlayer");
+                break;
+            case 2:
+                SceneManager.LoadScene("Multiplayer");
+                break;
+        }
     }
     
 }

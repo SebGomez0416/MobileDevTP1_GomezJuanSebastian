@@ -9,7 +9,13 @@ public class AudioController : MonoBehaviour
     private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
-        isMute = false;
+        
+    }
+
+    private void Start()
+    {
+        isMute= DatosPartida.instance.Mute;
+        _audioSource.mute = isMute;
     }
 
     private void OnEnable()
@@ -26,6 +32,7 @@ public class AudioController : MonoBehaviour
     {
         isMute = !isMute;
         _audioSource.mute = isMute;
+        DatosPartida.instance.Mute = isMute;
     }
     
     
