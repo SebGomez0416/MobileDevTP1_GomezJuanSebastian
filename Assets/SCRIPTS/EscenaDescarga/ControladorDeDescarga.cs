@@ -1,5 +1,5 @@
 using UnityEngine;
-using System.Collections;
+using System;
 
 public class ControladorDeDescarga : MonoBehaviour 
 {
@@ -34,11 +34,11 @@ public class ControladorDeDescarga : MonoBehaviour
 	
 	public float Bonus = 0;
 	float TempoBonus;
-	
-	
-	public AnimMngDesc ObjAnimado;
 
-	
+	public AnimMngDesc ObjAnimado;
+	public static event Action finalizarCarga;
+
+
 	//--------------------------------------------------------------//
 
 	// Use this for initialization
@@ -55,9 +55,11 @@ public class ControladorDeDescarga : MonoBehaviour
 			ObjAnimado.ContrDesc = this;
 	}
 	
+	
 	// Update is called once per frame
 	void Update () 
 	{
+		
 		//contador de tiempo
 		if(PEnMov != null)
 		{
@@ -79,6 +81,7 @@ public class ControladorDeDescarga : MonoBehaviour
 			
 	public void Activar(Deposito2 d)
 	{
+		
 		Dep = d;//recibe el deposito para que sepa cuando dejarlo ir al camion
 		CamaraConduccion.SetActive(false);//apaga la camara de conduccion
 			
@@ -128,6 +131,7 @@ public class ControladorDeDescarga : MonoBehaviour
 	//cuando sale de un estante
 	public void SalidaPallet(Pallet p)
 	{
+		
 		PEnMov = p;
 		TempoBonus = p.Tiempo;
 		Pj.SacarBolasa();
@@ -137,6 +141,7 @@ public class ControladorDeDescarga : MonoBehaviour
 	//cuando llega a la cinta
 	public void LlegadaPallet(Pallet p)
 	{
+		
 		//termina el contador y suma los pts
 		
 		//termina la descarga
@@ -158,6 +163,7 @@ public class ControladorDeDescarga : MonoBehaviour
 	//metodo llamado por el GameManager para avisar que se termino el juego
 	public void FinDelJuego()
 	{
+		
 		//desactiva lo que da y recibe las bolsas para que no halla mas flujo de estas
 		Est2.enabled = false;
 		Cin2.enabled = false;
@@ -165,6 +171,7 @@ public class ControladorDeDescarga : MonoBehaviour
 	
 	void Finalizacion()
 	{
+		finalizarCarga?.Invoke();
 		ObjAnimado.Salir();
 	}
 	
@@ -175,12 +182,14 @@ public class ControladorDeDescarga : MonoBehaviour
 	
 	public void FinAnimEntrada()
 	{
+		
 		//avisa cuando termino la animacion para que prosiga el juego
 		Est2.EncenderAnim();
 	}
 	
 	public void FinAnimSalida()
 	{
+		
 		//avisa cuando termino la animacion para que prosiga el juego
 		
 		for (int i = 0; i < Componentes.Length; i++)
@@ -195,6 +204,7 @@ public class ControladorDeDescarga : MonoBehaviour
 		Pj.CambiarAConduccion();
 		
 		Dep.Soltar();
+		
 		
 	}
 	

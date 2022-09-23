@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections;
 
@@ -13,27 +14,47 @@ public class CarCamera : MonoBehaviour
 	public float LejaniaZ = 1;
 
 	private RaycastHit hit = new RaycastHit();
-
 	private Vector3 prevVelocity = Vector3.zero;
 	private LayerMask raycastLayers = -1;
-	
 	private Vector3 currentVelocity = Vector3.zero;
+	private bool isPause;
+	private Rigidbody rb;
 	
 	void Start()
 	{
+		rb = target.GetComponentInParent<Rigidbody>();
 		raycastLayers = ~ignoreLayers;
+		isPause = false;
 	}
+
+	private void OnEnable()
+	{
+		UI_Buttons.OnPause += Pause;
+	}
+
+	private void OnDisable()
+	{
+		UI_Buttons.OnPause -= Pause;
+	}
+	private void Pause()
+	{
+		isPause = !isPause;
+	}
+
 
 	void FixedUpdate()
 	{
-		currentVelocity = Vector3.Lerp(prevVelocity, target.GetComponentInParent<Rigidbody>().velocity, velocityDamping * Time.deltaTime);
+		if (isPause) return;
+		currentVelocity = Vector3.Lerp(prevVelocity, rb.velocity, velocityDamping * Time.deltaTime);
 		currentVelocity.y = 0;
 		prevVelocity = currentVelocity;
 	}
 	
 	void LateUpdate()
 	{
-		float speedFactor = Mathf.Clamp01(target.GetComponentInParent<Rigidbody>().velocity.magnitude / 70.0f);
+		if (isPause) return;
+		
+		float speedFactor = Mathf.Clamp01(rb.velocity.magnitude / 70.0f);
 		GetComponent<Camera>().fieldOfView = Mathf.Lerp(55, 72, speedFactor);
 		float currentDistance = Mathf.Lerp(7.5f, 6.5f, speedFactor);
 		

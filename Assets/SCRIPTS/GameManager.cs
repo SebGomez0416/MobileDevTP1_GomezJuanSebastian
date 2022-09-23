@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour {
 
     [SerializeField]private float TiempoDeJuego = 60;
 
-    public enum EstadoJuego { Tutorial, Jugando, Finalizado }
+    public enum EstadoJuego { Tutorial, Jugando, Finalizado}
     [SerializeField]private EstadoJuego EstAct = EstadoJuego.Tutorial;
     [SerializeField]private Player[] players;
     
@@ -29,9 +29,12 @@ public class GameManager : MonoBehaviour {
     public static event Action RestaurarVelCoche;
     public static event Action <bool> HabilitarCoche;
 
+    public bool isPause;
+    public Player[] Players => this.players;
     
     void Awake() {
         GameManager.Instancia = this;
+        isPause = false;
     }
 
     private void Start()
@@ -40,11 +43,20 @@ public class GameManager : MonoBehaviour {
         DatosPartida.instance.cantidadPlayers = players.Length;
         IniciarTutorial();
     }
-    public Player[] Players => this.players;
+
+    private void OnEnable()
+    {
+        UI_Buttons.OnPause += Pause;
+    }
+
+    private void OnDisable()
+    {
+        UI_Buttons.OnPause -= Pause;
+    }
+
 
     private void Update()
     {
-        
         switch (EstAct) {
             case EstadoJuego.Tutorial:
 
@@ -67,7 +79,11 @@ public class GameManager : MonoBehaviour {
                         ConteoRedresivo = false;
                     }
                 }
-                else TiempoDeJuego -= T.GetDT();
+                else
+                {
+                    if (isPause) return;
+                    TiempoDeJuego -= T.GetDT();
+                }
                 
                 if (ConteoRedresivo) 
                 {
@@ -101,6 +117,24 @@ public class GameManager : MonoBehaviour {
                 break;
         }
         TiempoDeJuegoText.transform.parent.gameObject.SetActive(EstAct == EstadoJuego.Jugando && !ConteoRedresivo);
+    }
+
+    private void Pause()
+    {
+        isPause = !isPause;
+
+        if (isPause)
+        {
+            FrenarCoche?.Invoke();
+            HabilitarCoche?.Invoke(false);
+        }
+        else
+        {
+            HabilitarCoche?.Invoke(true);
+            RestaurarVelCoche?.Invoke();
+        }
+      
+        
     }
     private void IniciarTutorial()
     {

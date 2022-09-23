@@ -1,19 +1,37 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PalletMover : ManejoPallets {
 
     public MoveType miInput;
-    public enum MoveType {
-        WASD,
-        Arrows
-    }
-
+    public enum MoveType { WASD, Arrows }
     public ManejoPallets Desde, Hasta;
     bool segundoCompleto = false;
+    private bool isPause;
 
-    private void Update() {
+    private void Awake()
+    {
+        isPause = false;
+    }
+
+    private void OnEnable()
+    {
+        UI_Buttons.OnPause += Pause;
+    }
+
+    private void OnDisable()
+    {
+        UI_Buttons.OnPause -= Pause;
+    }
+
+    private void Pause()
+    {
+        isPause = !isPause;
+    }
+
+    private void Update()
+    {
+        if (isPause) return;
+        
         switch (miInput) {
             case MoveType.WASD:
                 if (!Tenencia() && Desde.Tenencia() && Input.GetKeyDown(KeyCode.A)) {

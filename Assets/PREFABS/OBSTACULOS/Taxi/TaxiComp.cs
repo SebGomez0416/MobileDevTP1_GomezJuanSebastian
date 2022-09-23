@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 using System.Collections;
+using Random = UnityEngine.Random;
 
 /// <summary>
 /// basicamente lo que hace es que viaja en linea recta y ocacionalmente gira para un cosatado
@@ -27,15 +29,11 @@ public class TaxiComp : MonoBehaviour
 	
 	float TiempEntreGiro = 0;
 	float TempoEntreGiro = 0;
-	
 	public float AngDeGiro = 30;
-	
 	RaycastHit RH;
-	
 	bool Respawneando = false;
-	
-	
 	enum Lado{Der, Izq}
+	private bool isPause;
 	
 	//-----------------------------------------------------------------//
 
@@ -45,11 +43,24 @@ public class TaxiComp : MonoBehaviour
 		TiempEntreGiro = (float) Random.Range(TiempCadaCuantoDobla_MaxMin.x, TiempCadaCuantoDobla_MaxMin.y);
 		RotIni = this.transform.localEulerAngles;
 		PosIni = transform.position;
+		isPause = false;
 	}
-	
-	// Update is called once per frame
-	void Update () 
+
+	private void OnEnable()
 	{
+		UI_Buttons.OnPause += Pausa;
+	}
+
+	private void OnDisable()
+	{
+		UI_Buttons.OnPause -= Pausa;
+	}
+
+
+	// Update is called once per frame
+	void Update ()
+	{
+		if (isPause) return;
 		
 		if(Respawneando)
 		{
@@ -81,6 +92,11 @@ public class TaxiComp : MonoBehaviour
 		
 	} 
 	
+	public void Pausa()
+	{
+		isPause = !isPause;
+	}
+	
 	void OnTriggerEnter(Collider coll)
 	{
 		if(coll.tag == FinTaxiTag)
@@ -100,6 +116,7 @@ public class TaxiComp : MonoBehaviour
 	
 	void FixedUpdate () 
 	{
+		if (isPause) return;
 		this.transform.position += transform.forward * Time.fixedDeltaTime * Vel;
 	}
 	

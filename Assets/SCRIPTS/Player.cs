@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Player : MonoBehaviour 
@@ -25,6 +26,8 @@ public class Player : MonoBehaviour
 	public bool FinTuto = false;
 
 	public Visualizacion.Lado LadoActual => MiVisualizacion.LadoAct;
+	
+	public static event Action  IniciarCarrera;
 
 	//------------------------------------------------------------------//
 
@@ -92,6 +95,7 @@ public class Player : MonoBehaviour
 	
 	public void CambiarAConduccion()
 	{
+		IniciarCarrera?.Invoke();
 		EstAct = Player.Estados.EnConduccion;
 		MiVisualizacion.CambiarAConduccion();
 	}

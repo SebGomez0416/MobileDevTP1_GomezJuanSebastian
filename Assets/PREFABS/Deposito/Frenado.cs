@@ -52,17 +52,19 @@ public class Frenado : MonoBehaviour
 	
 	private void Frenar()
 	{
+		Frenando = true;
+		rb.velocity = Vector3.zero;
+		rb.constraints = RigidbodyConstraints.FreezePositionZ;
 		_controlDireccion.enabled = false;
 		_carController.SetAcel(0f);
-		rb.velocity = Vector3.zero;
 		
-		Frenando = true;
 		Tempo = 0;
 		Contador = 0;
 	}
 	
 	public void RestaurarVel()
 	{
+		rb.constraints = RigidbodyConstraints.None;
 		_controlDireccion.enabled = true;
 		_carController.SetAcel(1f);
 		Frenando = false;
