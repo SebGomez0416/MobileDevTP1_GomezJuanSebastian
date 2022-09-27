@@ -7,8 +7,7 @@ public class UI_Buttons : MonoBehaviour
    
     [SerializeField] private GameObject backgroundPause;
     [SerializeField] private GameObject pause;
-    [SerializeField] private GameObject reiniciar;
-    
+
     public static event Action OnPause;
     public static event Action OnMute;
     private bool isPause;
@@ -33,16 +32,12 @@ public class UI_Buttons : MonoBehaviour
     private void ActivarBotones()
     {
         pause.SetActive(true);
-        reiniciar.SetActive(true);
     }
     
     private void DesactivarBotones()
     {
         pause.SetActive(false);
-        reiniciar.SetActive(false);
     }
-    
-    
 
     public void Reiniciar()
     {
@@ -57,8 +52,9 @@ public class UI_Buttons : MonoBehaviour
     public void Pausa()
     {
        isPause = !isPause;
-       OnPause?.Invoke();
        backgroundPause.SetActive(isPause);
+       
+       OnPause?.Invoke();
        
     }
 
