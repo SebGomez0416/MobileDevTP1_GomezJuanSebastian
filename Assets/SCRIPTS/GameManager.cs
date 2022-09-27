@@ -60,10 +60,10 @@ public class GameManager : MonoBehaviour {
         switch (EstAct) {
             case EstadoJuego.Tutorial:
 
-                if (Input.GetKeyDown(KeyCode.W)) 
+                if (InputManager.instance.GetAxis("Vertical0") >= 0.5f) 
                     players[0].Seleccionado = true;
 
-                if (Input.GetKeyDown(KeyCode.UpArrow)) 
+                if (InputManager.instance.GetAxis("Vertical1") >= 0.5f)
                     players[1].Seleccionado = true;
                 break;
 
