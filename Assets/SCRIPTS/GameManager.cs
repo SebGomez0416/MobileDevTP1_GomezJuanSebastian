@@ -3,13 +3,85 @@ using System;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour
+{
+    public abstract class GMState
+    {
+        public abstract void Update(GameManager gm);
+    }
+
+    public class GMStateTutorial:GMState
+    {
+        public override void Update(GameManager gm)
+        {
+            if (InputManager.instance.GetAxis("Vertical0") >= 0.5f) 
+                gm.players[0].Seleccionado = true;
+
+            if (InputManager.instance.GetAxis("Vertical1") >= 0.5f)
+                gm.players[1].Seleccionado = true;
+        }
+    }
+    
+    public class GMStateJugando:GMState
+    {
+        public override void Update(GameManager gm)
+        {
+            if ( gm.TiempoDeJuego <= 0) 
+                gm.FinalizarCarrera();
+
+            if ( gm.ConteoRedresivo) {
+                gm.ConteoParaInicion -= T.GetDT();
+                if ( gm.ConteoParaInicion < 0) {
+                    gm.EmpezarCarrera();
+                    gm.ConteoRedresivo = false;
+                }
+            }
+            else
+            {
+                if ( gm.isPause) return;
+                gm.TiempoDeJuego -= T.GetDT();
+            }
+                
+            if ( gm.ConteoRedresivo) 
+            {
+                if ( gm.ConteoParaInicion > 1) 
+                    gm.ConteoInicio.text =  gm.ConteoParaInicion.ToString("0");
+                    
+                else  gm.ConteoInicio.text = "GO";
+            }
+
+            gm.ConteoInicio.gameObject.SetActive( gm.ConteoRedresivo);
+            gm.TiempoDeJuegoText.text =  gm.TiempoDeJuego.ToString("00");
+        }
+    }
+    
+    public class GMStateFinalizado:GMState
+    {
+        public override void Update(GameManager gm)
+        {
+            gm.TiempEspMuestraPts -= Time.deltaTime;
+            if (gm.TiempEspMuestraPts <= 0)
+            {
+                if (gm.players.Length == 1)
+                {
+                    DatosPartida.instance.ScoreP1 = gm.players[0].Dinero;
+                    SceneManager.LoadScene("GameOverSinglePlayer");
+                }
+                else
+                {
+                    DatosPartida.instance.ScoreP1 = gm.players[0].Dinero;
+                    DatosPartida.instance.ScoreP2 = gm.players[1].Dinero;
+                    SceneManager.LoadScene("GameOverMultiplayer");
+                }
+            }
+        }
+    }
+    
+
     public static GameManager Instancia;
 
     [SerializeField]private float TiempoDeJuego = 60;
-
-    public enum EstadoJuego { Tutorial, Jugando, Finalizado}
-    [SerializeField]private EstadoJuego EstAct = EstadoJuego.Tutorial;
+    
     [SerializeField]private Player[] players;
     
     private bool ConteoRedresivo = true;
@@ -31,6 +103,11 @@ public class GameManager : MonoBehaviour {
 
     public bool isPause;
     public Player[] Players => this.players;
+
+    private GMStateTutorial stateTutorial = new GMStateTutorial();
+    private GMStateJugando stateJugando = new GMStateJugando();
+    private GMStateFinalizado stateFinalizado = new GMStateFinalizado();
+    private GMState currenState = null;
     
     void Awake() {
         GameManager.Instancia = this;
@@ -53,70 +130,12 @@ public class GameManager : MonoBehaviour {
     {
         UI_Buttons.OnPause -= Pause;
     }
-
-
     private void Update()
     {
-        switch (EstAct) {
-            case EstadoJuego.Tutorial:
-
-                if (InputManager.instance.GetAxis("Vertical0") >= 0.5f) 
-                    players[0].Seleccionado = true;
-
-                if (InputManager.instance.GetAxis("Vertical1") >= 0.5f)
-                    players[1].Seleccionado = true;
-                break;
-
-            case EstadoJuego.Jugando:
-
-                if (TiempoDeJuego <= 0) 
-                    FinalizarCarrera();
-
-                if (ConteoRedresivo) {
-                    ConteoParaInicion -= T.GetDT();
-                    if (ConteoParaInicion < 0) {
-                        EmpezarCarrera();
-                        ConteoRedresivo = false;
-                    }
-                }
-                else
-                {
-                    if (isPause) return;
-                    TiempoDeJuego -= T.GetDT();
-                }
-                
-                if (ConteoRedresivo) 
-                {
-                    if (ConteoParaInicion > 1) 
-                        ConteoInicio.text = ConteoParaInicion.ToString("0");
-                    
-                    else ConteoInicio.text = "GO";
-                }
-
-                ConteoInicio.gameObject.SetActive(ConteoRedresivo);
-                TiempoDeJuegoText.text = TiempoDeJuego.ToString("00");
-                break;
-
-            case EstadoJuego.Finalizado:
-
-                TiempEspMuestraPts -= Time.deltaTime;
-                if (TiempEspMuestraPts <= 0)
-                {
-                    if (players.Length == 1)
-                    {
-                        DatosPartida.instance.ScoreP1 = players[0].Dinero;
-                        SceneManager.LoadScene("GameOverSinglePlayer");
-                    }
-                    else
-                    {
-                        DatosPartida.instance.ScoreP1 = players[0].Dinero;
-                        DatosPartida.instance.ScoreP2 = players[1].Dinero;
-                        SceneManager.LoadScene("GameOverMultiplayer");
-                    }
-                }
-                break;
-        }
-        TiempoDeJuegoText.transform.parent.gameObject.SetActive(EstAct == EstadoJuego.Jugando && !ConteoRedresivo);
+        if(currenState != null)
+             currenState.Update(this);
+        
+         TiempoDeJuegoText.transform.parent.gameObject.SetActive(currenState == stateJugando && !ConteoRedresivo);
     }
 
     private void Pause()
@@ -140,6 +159,8 @@ public class GameManager : MonoBehaviour {
     {
         foreach (var p in players)
             p.CambiarATutorial();
+        
+        currenState = stateTutorial;
     }
     private void EmpezarCarrera()
     {
@@ -149,7 +170,7 @@ public class GameManager : MonoBehaviour {
 
     void FinalizarCarrera() 
     {
-        EstAct = GameManager.EstadoJuego.Finalizado;
+        currenState = stateFinalizado;
         TiempoDeJuego = 0;
 
         FrenarCoche?.Invoke();
@@ -158,7 +179,8 @@ public class GameManager : MonoBehaviour {
     }
     void CambiarACarrera() {
 
-        EstAct = GameManager.EstadoJuego.Jugando;
+        currenState = stateJugando;
+        
         ConteoInicio.gameObject.SetActive(true);
         
         foreach (var p in players)
